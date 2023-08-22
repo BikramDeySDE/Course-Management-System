@@ -17,7 +17,16 @@ app.use(bodyParser.json()); // for parsing the body to json (In POST or PUT requ
 app.use("/api/v1/courses",courseRouter);    // if this url is fired, this router and all its routes will be activated 
 
 // connecting with DB
-mongoose.connect(process.env.DB_CONNECTION_URL);    // callback is depricated for some functions in mongoose -->(Not sure about this solution) mongoose-stopped-accepting-callbacks-for-some-of-its-functions : if we still want to use, we need to use async-await
+// mongoose.connect(process.env.DB_CONNECTION_URL);    // callback is depricated for some functions in mongoose -->(Not sure about this solution) mongoose-stopped-accepting-callbacks-for-some-of-its-functions : if we still want to use, we need to use async-await
+(async () => {
+    try {
+        await mongoose.connect(process.env.DB_CONNECTION_URL);    
+        console.log("DB Connected !!");
+    } catch (error) {
+        console.log("Error connecting to the DB : ", error);
+    }
+})();
+
 
 // listening
 app.listen(process.env.PORT,()=>{                   // if server successfully on the given port, the callback function will run     // to access the PORT written in '.env' file : process.env.PORT
